@@ -74,7 +74,7 @@ class MotorDriving():
         GPIO.output(self.motor_pins[motor_id][self.PIN_CCW], not direction)
         self.motor_pins[motor_id]["pwm"].start(dc)
 
-    def drive(self, action, speed=0.6):
+    def drive(self, action, speed=60.0):
         """Drive the robot with the specified action at the specified speed.
 
         Args:
@@ -104,7 +104,7 @@ class MotorDriving():
 
 if __name__ == '__main__':
     md = MotorDriving()
-    md.drive(md.FORWARD)
+    md.drive(md.FORWARD, speed=100.0)
     time.sleep(10.0)
     md.drive(md.STOP)
     GPIO.cleanup()
