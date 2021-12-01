@@ -105,6 +105,6 @@ class MotorDriving():
 if __name__ == '__main__':
     md = MotorDriving()
     md.drive(md.FORWARD)
-    time.sleep(2.0)
+    time.sleep(10.0)
     md.drive(md.STOP)
     GPIO.cleanup()
