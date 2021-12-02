@@ -1,6 +1,7 @@
 # Memeba
 
 **One Memeba to rule them all**
+![The One Memeba](assets/one_memeba.png)
 
 ## Description
 
