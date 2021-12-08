@@ -7,16 +7,13 @@ import time
 
 
 class HardwarePWM():
-    def __init__(self):
+    def __init__(self, pin):
         self.pi = pigpio.pi()
-
-    def run(self, pin):
-        # for i in range(10000):
-        #     print("Hello" + str(i))
-        #     self.pi.hardware_PWM(pin, 20000, 500000)
-        #     time.sleep(0.0001)
-        # self.pi.stop()
-        self.pi.hardware_PWM(pin, 20000, 500000)
+        if isinstance(pin, int):
+            pin = [pin]
+        assert isinstance(pin, list)
+        for p in pin:
+            self.pi.hardware_PWM(p, 20000, 500000)
 
 
 class MotorDriving():
@@ -125,11 +122,7 @@ class MotorDriving():
 if __name__ == '__main__':
     try:
         md = MotorDriving()
-        pwm = HardwarePWM()
-        print("Running 12")
-        pwm.run(12)
-        print("Running 13")
-        pwm.run(13)
+        # pwm = HardwarePWM([12, 13])
         print("Driving backward")
         md.drive(md.BACKWARD, speed=50.0)
         time.sleep(5.0)
