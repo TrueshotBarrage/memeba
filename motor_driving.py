@@ -39,7 +39,7 @@ class MotorDriving():
             {
                 "pwm_pin": 12,
                 "clockwise": 16,  # AI2
-                "counterclockwise": 20 # AI1
+                "counterclockwise": 20  # AI1
             },
             {
                 "pwm_pin": 13,
@@ -71,16 +71,8 @@ class MotorDriving():
             direction (bool): True/False for clockwise/counterclockwise
             dc (float): The duty cycle for the PWM instance of the motor
         """
-        print(
-            f"motor1: {self.motor_pins[motor_id][self.PIN_CW]} direction: {direction}"
-        )
-        print(
-            f"motor2: {self.motor_pins[motor_id][self.PIN_CCW]} direction: {not direction}"
-        )
-        GPIO.output(self.motor_pins[motor_id][self.PIN_CW], GPIO.LOW)
-        GPIO.output(self.motor_pins[motor_id][self.PIN_CCW], GPIO.LOW)
-        # GPIO.output(self.motor_pins[motor_id][self.PIN_CW], direction)
-        # GPIO.output(self.motor_pins[motor_id][self.PIN_CCW], not direction)
+        GPIO.output(self.motor_pins[motor_id][self.PIN_CW], direction)
+        GPIO.output(self.motor_pins[motor_id][self.PIN_CCW], not direction)
         self.motor_pins[motor_id]["pwm"].start(dc)
 
     def drive(self, action, speed=60.0):
@@ -95,7 +87,6 @@ class MotorDriving():
             self._set_motor(self.R_M, self.DIR_CW, speed)
 
         elif action == self.BACKWARD:
-            print("Backwards!!")
             self._set_motor(self.L_M, self.DIR_CW, speed)
             self._set_motor(self.R_M, self.DIR_CCW, speed)
 
@@ -116,6 +107,8 @@ if __name__ == '__main__':
     try:
         md = MotorDriving()
         md.drive(md.BACKWARD, speed=50.0)
+        time.sleep(5.0)
+        md.drive(md.FORWARD, speed=50.0)
         time.sleep(5.0)
         md.drive(md.STOP)
         GPIO.cleanup()
