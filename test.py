@@ -11,13 +11,12 @@ def main():
         # time.sleep(10.0)
         # GPIO.cleanup()
 
-        dc = 200000  # 20% duty cycle
+        dc = 500000  # 50% duty cycle
         pwm_pin = 12
 
         PI = pigpio.pi()
-        PI.set_mode(pwm_pin, pigpio.OUTPUT)
-        PI.hardware_PWM(pwm_pin, 400, dc)
-        PI.write(pwm_pin, 1)
+        PI.hardware_PWM(pwm_pin, 20000, dc)
+
         time.sleep(5.0)
 
         PI.stop()
