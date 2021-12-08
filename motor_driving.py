@@ -82,8 +82,8 @@ class MotorDriving():
             speed (float): The speed of the robot's movement
         """
         if action == self.FORWARD:
-            self._set_motor(self.L_M, self.DIR_CW, speed)
-            self._set_motor(self.R_M, self.DIR_CCW, speed)
+            self._set_motor(self.L_M, self.DIR_CCW, speed)
+            self._set_motor(self.R_M, self.DIR_CW, speed)
 
         elif action == self.BACKWARD:
             self._set_motor(self.L_M, self.DIR_CW, speed)
@@ -105,8 +105,8 @@ class MotorDriving():
 if __name__ == '__main__':
     try:
         md = MotorDriving()
-        md.drive(md.FORWARD, speed=50.0)
-        time.sleep(1.0)
+        md.drive(md.BACKWARD, speed=50.0)
+        time.sleep(5.0)
         md.drive(md.STOP)
         GPIO.cleanup()
 
