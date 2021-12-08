@@ -76,8 +76,10 @@ class MotorDriving():
         print(
             f"motor2: {self.motor_pins[motor_id][self.PIN_CCW]} direction: {not direction}"
         )
-        GPIO.output(self.motor_pins[motor_id][self.PIN_CW], direction)
-        GPIO.output(self.motor_pins[motor_id][self.PIN_CCW], not direction)
+        GPIO.output(self.motor_pins[motor_id][self.PIN_CW], False)
+        GPIO.output(self.motor_pins[motor_id][self.PIN_CCW], False)
+        # GPIO.output(self.motor_pins[motor_id][self.PIN_CW], direction)
+        # GPIO.output(self.motor_pins[motor_id][self.PIN_CCW], not direction)
         self.motor_pins[motor_id]["pwm"].start(dc)
 
     def drive(self, action, speed=60.0):
@@ -94,7 +96,7 @@ class MotorDriving():
         elif action == self.BACKWARD:
             print("Backwards!!")
             self._set_motor(self.L_M, self.DIR_CW, speed)
-            # self._set_motor(self.R_M, self.DIR_CCW, speed)
+            self._set_motor(self.R_M, self.DIR_CCW, speed)
 
         elif action == self.ROTATE_CW:
             self._set_motor(self.L_M, self.DIR_CW, speed)
