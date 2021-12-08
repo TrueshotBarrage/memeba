@@ -34,20 +34,17 @@ class MotorDriving():
         self.STOP = 5
 
         # These are our configurations for the motor driver <-> GPIO pins
+        # TODO: Set up the PWM pins differently
         self.motor_pins = [
             {
-                "pwm_pin": 20,
+                "pwm_pin": 12,
                 "clockwise": 16,  # AI2
-                "counterclockwise": 12  # AI1
+                "counterclockwise": 20 # AI1
             },
             {
-                "pwm_pin": 23,
-                "clockwise": 25,  # BI2
+                "pwm_pin": 13,
+                "clockwise": 18,  # BI2
                 "counterclockwise": 24  # BI1
-            },
-            {
-                "": 18,
-                "": 21
             }
         ]
 
@@ -63,7 +60,7 @@ class MotorDriving():
         self.motor_pins[self.R_M]["pwm"] = GPIO.PWM(
             self.motor_pins[self.R_M]["pwm_pin"], 50)
 
-    def _dc_to_speed():
+    def _dc_to_speed(dc):
         raise NotImplementedError()
 
     def _set_motor(self, motor_id, direction, dc):
