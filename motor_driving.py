@@ -23,8 +23,8 @@ class MotorDriving():
         self.PIN_CCW = "counterclockwise"
 
         # Directions
-        self.DIR_CW = True
-        self.DIR_CCW = False
+        self.DIR_CW = GPIO.HIGH
+        self.DIR_CCW = GPIO.LOW
 
         # Actions
         self.FORWARD = 1
@@ -45,13 +45,17 @@ class MotorDriving():
                 "clockwise": 25,  # BI2
                 "counterclockwise": 24  # BI1
             },
+            {
+                "": 18,
+                "": 21
+            }
         ]
 
         # Set up GPIO pins for each motor driver connection
         GPIO.setmode(GPIO.BCM)
         for output_pins in self.motor_pins:
             for pin in output_pins.values():
-                GPIO.setup(pin, GPIO.OUT)
+                GPIO.setup(pin, GPIO.OUT, initial=GPIO.LOW)
 
         # Set up PWM instances for each motor
         self.motor_pins[self.L_M]["pwm"] = GPIO.PWM(
@@ -76,8 +80,8 @@ class MotorDriving():
         print(
             f"motor2: {self.motor_pins[motor_id][self.PIN_CCW]} direction: {not direction}"
         )
-        GPIO.output(self.motor_pins[motor_id][self.PIN_CW], False)
-        GPIO.output(self.motor_pins[motor_id][self.PIN_CCW], False)
+        GPIO.output(self.motor_pins[motor_id][self.PIN_CW], GPIO.LOW)
+        GPIO.output(self.motor_pins[motor_id][self.PIN_CCW], GPIO.LOW)
         # GPIO.output(self.motor_pins[motor_id][self.PIN_CW], direction)
         # GPIO.output(self.motor_pins[motor_id][self.PIN_CCW], not direction)
         self.motor_pins[motor_id]["pwm"].start(dc)
