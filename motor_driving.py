@@ -37,12 +37,12 @@ class MotorDriving():
         # TODO: Set up the PWM pins differently
         self.motor_pins = [
             {
-                "pwm_pin": 12,
+                # "pwm_pin": 12,
                 "clockwise": 16,  # AI2
                 "counterclockwise": 20  # AI1
             },
             {
-                "pwm_pin": 13,
+                # "pwm_pin": 13,
                 "clockwise": 18,  # BI2
                 "counterclockwise": 24  # BI1
             }
@@ -55,10 +55,10 @@ class MotorDriving():
                 GPIO.setup(pin, GPIO.OUT, initial=GPIO.LOW)
 
         # Set up PWM instances for each motor
-        self.motor_pins[self.L_M]["pwm"] = GPIO.PWM(
-            self.motor_pins[self.L_M]["pwm_pin"], 50)
-        self.motor_pins[self.R_M]["pwm"] = GPIO.PWM(
-            self.motor_pins[self.R_M]["pwm_pin"], 50)
+        # self.motor_pins[self.L_M]["pwm"] = GPIO.PWM(
+        #     self.motor_pins[self.L_M]["pwm_pin"], 50)
+        # self.motor_pins[self.R_M]["pwm"] = GPIO.PWM(
+        #     self.motor_pins[self.R_M]["pwm_pin"], 50)
 
     def _dc_to_speed(dc):
         raise NotImplementedError()
@@ -73,7 +73,7 @@ class MotorDriving():
         """
         GPIO.output(self.motor_pins[motor_id][self.PIN_CW], direction)
         GPIO.output(self.motor_pins[motor_id][self.PIN_CCW], not direction)
-        self.motor_pins[motor_id]["pwm"].start(dc)
+        # self.motor_pins[motor_id]["pwm"].start(dc)
 
     def drive(self, action, speed=60.0):
         """Drive the robot with the specified action at the specified speed.

@@ -11,12 +11,17 @@ def main():
         # time.sleep(10.0)
         # GPIO.cleanup()
 
-        pwm = HardwarePWM(0, hz=1000)
-        pwm.start(100) # full duty cycle
+        pwm = HardwarePWM(0, hz=60)
+        md = motor_driving.MotorDriving()
+        md.drive(md.FORWARD)
+        pwm.start(100)  # full duty cycle
         time.sleep(5.0)
-        pwm.change_duty_cycle(100)
+
+        md.drive(md.BACKWARD)
         time.sleep(5.0)
+
         pwm.stop()
+        GPIO.cleanup()
 
     except KeyboardInterrupt:
         GPIO.cleanup()
