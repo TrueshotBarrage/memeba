@@ -42,8 +42,8 @@ class MotorDriving():
             },
             {
                 "pwm_pin": 23,
-                "clockwise": 24,  # BI2
-                "counterclockwise": 25  # BI1
+                "clockwise": 25,  # BI2
+                "counterclockwise": 24  # BI1
             },
         ]
 
@@ -105,7 +105,7 @@ class MotorDriving():
 if __name__ == '__main__':
     try:
         md = MotorDriving()
-        md.drive(md.FORWARD, speed=100.0)
+        md.drive(md.FORWARD, speed=50.0)
         time.sleep(1.0)
         md.drive(md.STOP)
         GPIO.cleanup()
