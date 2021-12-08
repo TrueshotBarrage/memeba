@@ -103,8 +103,12 @@ class MotorDriving():
 
 
 if __name__ == '__main__':
-    md = MotorDriving()
-    md.drive(md.FORWARD, speed=100.0)
-    time.sleep(10.0)
-    md.drive(md.STOP)
-    GPIO.cleanup()
+    try:
+        md = MotorDriving()
+        md.drive(md.FORWARD, speed=100.0)
+        time.sleep(1.0)
+        md.drive(md.STOP)
+        GPIO.cleanup()
+
+    except KeyboardInterrupt:
+        GPIO.cleanup()
