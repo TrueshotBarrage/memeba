@@ -1,33 +1,39 @@
 import time
 import RPi.GPIO as GPIO
 
-from rpi_hardware_pwm import HardwarePWM
+# from rpi_hardware_pwm import HardwarePWM
 import motor_driving
 
 
 def main():
     try:
+        pwm = motor_driving.HardwarePWM()
+        #print("Running 12")
+        #pwm.run(12)
+        print("Running 13")
+        pwm.run(13)
         # md = motor_driving.MotorDriving()
         # time.sleep(10.0)
         # GPIO.cleanup()
 
-        pwm = HardwarePWM(0, hz=6000)
-        pwm2 = HardwarePWM(1, hz=6000)
-        md = motor_driving.MotorDriving()
-        pwm.start(100)  # full duty cycle
-        pwm2.start(100)
-        md.drive(md.FORWARD)
-        time.sleep(5.0)
+        # pwm = HardwarePWM(0, hz=6000)
+        # pwm2 = HardwarePWM(1, hz=6000)
+        # md = motor_driving.MotorDriving()
+        # pwm.start(100)  # full duty cycle
+        # pwm2.start(100)
+        # md.drive(md.FORWARD)
+        # time.sleep(5.0)
 
-        md.drive(md.BACKWARD)
-        time.sleep(5.0)
+        # md.drive(md.BACKWARD)
+        # time.sleep(5.0)
 
-        pwm.stop()
-        pwm2.stop()
-        GPIO.cleanup()
+        # pwm.stop()
+        # pwm2.stop()
+        # GPIO.cleanup()
 
     except KeyboardInterrupt:
         GPIO.cleanup()
+        pwm.pi.stop()
 
 
 if __name__ == "__main__":

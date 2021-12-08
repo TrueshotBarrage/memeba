@@ -2,7 +2,21 @@
 # Zoltan Csaki (zcc6)
 
 import RPi.GPIO as GPIO
+import pigpio
 import time
+
+
+class HardwarePWM():
+    def __init__(self):
+        self.pi = pigpio.pi()
+
+    def run(self, pin):
+        # for i in range(10000):
+        #     print("Hello" + str(i))
+        #     self.pi.hardware_PWM(pin, 20000, 500000)
+        #     time.sleep(0.0001)
+        # self.pi.stop()
+        self.pi.hardware_PWM(pin, 20000, 500000)
 
 
 class MotorDriving():
@@ -48,6 +62,8 @@ class MotorDriving():
             }
         ]
 
+        # self.pwm_pins = [{"pwm_pin": 12}, {"pwm_pin": 13}]
+
         # Set up GPIO pins for each motor driver connection
         GPIO.setmode(GPIO.BCM)
         for output_pins in self.motor_pins:
@@ -59,6 +75,9 @@ class MotorDriving():
         #     self.motor_pins[self.L_M]["pwm_pin"], 50)
         # self.motor_pins[self.R_M]["pwm"] = GPIO.PWM(
         #     self.motor_pins[self.R_M]["pwm_pin"], 50)
+        # for pin in self.pwm_pins:
+        #     pi = pigpio.pi()
+        #     pi.hardware_PWM(pin, 20000, 500000)
 
     def _dc_to_speed(dc):
         raise NotImplementedError()
@@ -106,8 +125,16 @@ class MotorDriving():
 if __name__ == '__main__':
     try:
         md = MotorDriving()
+        pwm = HardwarePWM()
+        print("Running 12")
+        pwm.run(12)
+        print("Running 13")
+        pwm.run(13)
+        print("Driving backward")
         md.drive(md.BACKWARD, speed=50.0)
         time.sleep(5.0)
+
+        print("Driving forward")
         md.drive(md.FORWARD, speed=50.0)
         time.sleep(5.0)
         md.drive(md.STOP)
