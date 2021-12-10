@@ -37,7 +37,7 @@ class Action(Enum):
 
 
 class HardwarePWM():
-    def __init__(self, pin, freq=20000.0, dc=100.0):
+    def __init__(self, pin, freq=20000, dc=100.0):
         """Set up the PWM instance in the hardware for the motor controls.
 
         Args:
@@ -49,7 +49,7 @@ class HardwarePWM():
             pi (pigpio): PiGPIO base class object
             pins (list): List of PWM GPIO pins
         """
-        assert 0.0 <= dc <= 100.0, f"Duty cycle ({dc}) must be between 0 and 100"
+        assert 0.0 <= dc <= 100, f"Duty cycle ({dc}) must be between 0 and 100"
 
         # Start the pigpio instance
         self.pi = pigpio.pi()
@@ -72,8 +72,9 @@ class HardwarePWM():
         """
         if dc is not None:
             self.dc = dc
+
         for p in self.pins:
-            self.pi.hardware_PWM(p, self.freq, self.dc * 10000)
+            self.pi.hardware_PWM(p, int(self.freq), int(self.dc) * 10000)
 
     def change_dc(self, new_dc):
         """Change the duty cycle of the PWM instance.
@@ -142,7 +143,7 @@ class MotorDriver():
         GPIO.output(self.motor_pins[motor_id][Pin.CCW], not rot_cw)
         self.pwm[motor_id].start(dc)
 
-    def drive(self, action, speed=60.0):
+    def drive(self, action, speed=60):
         """Drive the robot with the specified action at the specified speed.
 
         Args:
@@ -166,8 +167,8 @@ class MotorDriver():
             self._set_motor(Motor.RIGHT, Rot.CCW, speed)
 
         elif action == Action.STOP:
-            self._set_motor(Motor.LEFT, Rot.CCW, 0.0)
-            self._set_motor(Motor.RIGHT, Rot.CCW, 0.0)
+            self._set_motor(Motor.LEFT, Rot.CCW, 0)
+            self._set_motor(Motor.RIGHT, Rot.CCW, 0)
 
     def cleanup(self):
         """Clean up GPIO & PWM instances."""
