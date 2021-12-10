@@ -37,7 +37,7 @@ class Action(Enum):
 
 
 class HardwarePWM():
-    def __init__(self, pin, freq=20000, dc=100.0):
+    def __init__(self, pin, freq=20000 dc=50):
         """Set up the PWM instance in the hardware for the motor controls.
 
         Args:
@@ -143,7 +143,7 @@ class MotorDriver():
         GPIO.output(self.motor_pins[motor_id][Pin.CCW], not rot_cw)
         self.pwm[motor_id].start(dc)
 
-    def drive(self, action, speed=60):
+    def drive(self, action, speed=45):
         """Drive the robot with the specified action at the specified speed.
 
         Args:
