@@ -1,14 +1,13 @@
 import time
 import RPi.GPIO as GPIO
 
-from rpi_hardware_pwm import HardwarePWM
 import hw_interface as hw
 
 
 def main():
     md = hw.MotorDriver()
     try:
-        pass
+        md.drive(hw.Action.FORWARD)
     except KeyboardInterrupt:
         md.cleanup()
 
