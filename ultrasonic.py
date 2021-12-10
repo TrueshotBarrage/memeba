@@ -1,24 +1,26 @@
+import time
 from gpiozero import DistanceSensor
 import RPi.GPIO as GPIO
 
 
 class Ultrasonic:
     def __init__(self):
-
         self.distances = [None, None, None]
-        self.left_ultra = DistanceSensor(echo=27, trigger=6, max_distance=4)
+        self.left_ultra = DistanceSensor(echo=6, trigger=27, max_distance=4)
+        self.mid_ultra = DistanceSensor(echo=19, trigger=17, max_distance=4)
+        self.right_ultra = DistanceSensor(echo=26, trigger=4, max_distance=4)
 
-    def read_ultrasonic(self):
-        print(self.left_ultra.distance)
-
-    def poll_ultrasonics(self):
-        pass
+    def update_ultrasonic(self):
+        self.distances = [self.left_ultra.distance, self.mid_ultra.distance,
+                          self.right_ultra.distance]
 
 
 if __name__ == '__main__':
     try:
         ultras = Ultrasonic()
         for i in range(10):
-            ultras.read_ultrasonic()
+            ultras.update_ultrasonic()
+            print(ultras.distances)
+            time.sleep(1)
     except KeyboardInterrupt:
         GPIO.cleanup()
