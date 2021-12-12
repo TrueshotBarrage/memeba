@@ -5,6 +5,7 @@ from enum import Enum, auto
 
 import RPi.GPIO as GPIO
 import pigpio
+from gpiozero import DistanceSensor
 
 # Enumerated constants for ease of access
 
@@ -37,7 +38,7 @@ class Action(Enum):
 
 
 class HardwarePWM():
-    def __init__(self, pin, freq=20000 dc=50):
+    def __init__(self, pin, freq=20000, dc=50):
         """Set up the PWM instance in the hardware for the motor controls.
 
         Args:
@@ -99,6 +100,31 @@ class HardwarePWM():
     def cleanup(self):
         """Clean up the PWM instance."""
         self.pi.stop()
+
+
+class UltrasonicModule():
+    class Ultrasonic():
+        def __init__(self, echo, trig, max_dist=4):
+            self.sensor = DistanceSensor(echo=echo,
+                                         trigger=trig,
+                                         max_distance=max_dist)
+
+        def get_dist(self):
+            return self.sensor.distance
+
+    def __init__(self):
+        self.sensors = []
+        self.left_ultra = UltrasonicModule.Ultrasonic(6, 27)
+        self.mid_ultra = UltrasonicModule.Ultrasonic(19, 17)
+        self.right_ultra = UltrasonicModule.Ultrasonic(5, 4)
+        self.sensors.append(self.left_ultra, self.mid_ultra, self.right_ultra)
+
+    def sequential_ping(self, period=1):
+        dists = []
+        for sensor in self.sensors:
+            dists.append(sensor.get_dist())
+            time.sleep(period)
+        return dists
 
 
 class MotorDriver():
