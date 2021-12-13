@@ -39,11 +39,11 @@ class Action(Enum):
 
 
 class Speed(int, Enum):
-    SLOW = 30
-    VEER_SLOW = 45
-    MEDIUM = 50
-    VEER_FAST = 55
-    FAST = 60
+    SLOW = 45
+    VEER_SLOW = 50
+    MEDIUM = 55
+    VEER_FAST = 60
+    FAST = 70
 
 
 class HardwarePWM():
@@ -200,8 +200,6 @@ class MotorDriver():
             self._set_motor(Motor.RIGHT, Rot.CCW, 0)
 
         elif action == Action.VEER:
-            print(
-                f"Veering at ration left speed: {speed1},  right speed{speed1}")
             self._set_motor(Motor.LEFT, Rot.CCW, speed1)
             self._set_motor(Motor.RIGHT, Rot.CW, speed2)
 

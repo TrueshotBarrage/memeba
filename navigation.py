@@ -15,8 +15,10 @@ class Navigate():
         min_ind = sorted_ind[0]
         max_ind = sorted_ind[2]
         if max_ind < min_ind:
+            print("Veering left")
             self.motors.drive(Action.VEER, Speed.VEER_SLOW, Speed.VEER_FAST)
         else:
+            print("Veering right")
             self.motors.drive(Action.VEER, Speed.VEER_FAST, Speed.VEER_SLOW)
 
     def run(self):
@@ -31,7 +33,8 @@ class Navigate():
                         self.motors.drive(Action.ROTATE_CW, Speed.SLOW)
                     elif min_index == 1:
                         random_turn = random.choice(
-                            [Action.ROTATE_CW, Action.ROTATE_CCW])
+                            # [Action.ROTATE_CW, Action.ROTATE_CCW])
+                            [Action.ROTATE_CW])
                         self.motors.drive(random_turn, Speed.SLOW)
                     elif min_index == 2:
                         self.motors.drive(Action.ROTATE_CCW, Speed.SLOW)
@@ -43,7 +46,7 @@ class Navigate():
                                       self.get_veer_ratio())
                 else:
                     self.motors.drive(Action.VEER, Speed.MEDIUM)
-                time.sleep(0.001)
+                time.sleep(0.1)
 
         except KeyboardInterrupt:
             self.motors.cleanup()
