@@ -11,9 +11,12 @@ def kill(procname):
 
 
 def init_display():
-    load_meme = "curl -X GET 'https://meme-api.herokuapp.com/gimme' | jq '.url' | xargs wget -O meme; sxiv -a -f -s f meme &"
+    download_meme = "curl -X GET 'https://meme-api.herokuapp.com/gimme' | jq '.url' | xargs wget -O meme"
+    show_meme = "sxiv -a -f -s f meme &"
+    os.system(download_meme)
     while True:
-        os.system(load_meme)
+        os.system(show_meme)
+        os.system(download_meme)
         time.sleep(5)
         kill("sxiv")
 
