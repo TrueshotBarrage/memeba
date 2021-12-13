@@ -1,7 +1,6 @@
 from hw_interface import *
 from ultrasonic import Ultrasonic
 import numpy as np
-import random
 import time
 
 
@@ -10,42 +9,49 @@ class Navigate():
         self.ultrasonics = Ultrasonic()
         self.motors = MotorDriver()
 
-    def get_veer_ratio(self):
+    def veer(self):
         sorted_ind = np.argsort(self.ultrasonics.distances)
         min_ind = sorted_ind[0]
         max_ind = sorted_ind[2]
+
+        # If there is more open space on the left, veer left
         if max_ind < min_ind:
-            print("Veering left")
-            self.motors.drive(Action.VEER, Speed.VEER_SLOW, Speed.VEER_FAST)
+            self.motors.drive(Action.VEER_LEFT, Speed.MEDIUM)
+        # If there is more open space on the right, veer right
         else:
-            print("Veering right")
-            self.motors.drive(Action.VEER, Speed.VEER_FAST, Speed.VEER_SLOW)
+            self.motors.drive(Action.VEER_RIGHT, Speed.MEDIUM)
 
     def run(self):
         try:
             while True:
+                # Update the ultrasonic sensor readings
                 self.ultrasonics.update_ultrasonic()
                 print(self.ultrasonics.distances)
-                min_val = min(self.ultrasonics.distances)
+
                 min_index = np.argmin(self.ultrasonics.distances)
-                if min_val < .30:
+                min_val = self.ultrasonics.distances[min_index]
+                
+                # If the robot is very close to obstacles on all fronts, go backwards
+                if all(dist < .30 for dist in self.ultrasonics.distances):
+                    self.motors.drive(Action.DRIVE_BACKWARD, Speed.SLOW)
+                    
+                # If the robot is close to obstacle on one side rotate away from it
+                elif min_val < .30:
                     if min_index == 0:
                         self.motors.drive(Action.ROTATE_RIGHT, Speed.FAST)
                     elif min_index == 1:
-                        random_turn = random.choice(
-                            # [Action.ROTATE_LEFT, Action.ROTATE_RIGHT])
-                            [Action.ROTATE_LEFT])
-                        self.motors.drive(random_turn, Speed.FAST)
+                        self.motors.drive(Action.ROTATE_LEFT, Speed.FAST)
                     elif min_index == 2:
                         self.motors.drive(Action.ROTATE_LEFT, Speed.FAST)
-                elif min_val < .60:
-                    self.motors.drive(Action.VEER, Speed.SLOW,
-                                      self.get_veer_ratio())
+                        
+                # If the robot senses an obstacle on one side, veer away from it
                 elif min_val < 1.00:
-                    self.motors.drive(Action.VEER, Speed.MEDIUM,
-                                      self.get_veer_ratio())
+                    self.veer()
+                    
+                # If there are no obstacles near the robot, go forward
                 else:
-                    self.motors.drive(Action.VEER, Speed.MEDIUM)
+                    self.motors.drive(Action.DRIVE_FORWARD, Speed.MEDIUM)
+                    
                 time.sleep(0.1)
 
         except KeyboardInterrupt:
