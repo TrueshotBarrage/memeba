@@ -94,10 +94,14 @@ if __name__ == "__main__":
 
             # Below provides a huge amount of control.
             # 0.45 = threshold number, 0.2 = nms number
+            start = time.time()
             result, object_info = get_objects(img,
                                               0.45,
                                               0.2,
                                               objects=["shoe", "person"])
+            elapsed_time = time.time() - start
+            print(f"Elapsed time: {elapsed_time}")
+            print(f"result: {type(result)}, object: {object_info}")
 
             # Show the frame
             cv2.imshow("Output", img)
