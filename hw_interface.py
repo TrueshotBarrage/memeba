@@ -32,8 +32,8 @@ class Rot(int, Enum):
 class Action(Enum):
     FORWARD = auto()
     BACKWARD = auto()
-    ROTATE_CW = auto()
-    ROTATE_CCW = auto()
+    ROTATE_LEFT = auto()
+    ROTATE_RIGHT = auto()
     STOP = auto()
     VEER = auto()
 
@@ -185,13 +185,13 @@ class MotorDriver():
             self._set_motor(Motor.LEFT, Rot.CW, speed1)
             self._set_motor(Motor.RIGHT, Rot.CCW, speed1)
 
-        elif action == Action.ROTATE_CW:
-            print(f"Rotating CW at {speed1}%")
+        elif action == Action.ROTATE_LEFT:
+            print(f"Rotating left at {speed1}%")
             self._set_motor(Motor.LEFT, Rot.CW, speed1)
             self._set_motor(Motor.RIGHT, Rot.CW, speed1)
 
-        elif action == Action.ROTATE_CCW:
-            print(f"Rotating CCW at {speed1}%")
+        elif action == Action.ROTATE_RIGHT:
+            print(f"Rotating right at {speed1}%")
             self._set_motor(Motor.LEFT, Rot.CCW, speed1)
             self._set_motor(Motor.RIGHT, Rot.CCW, speed1)
 
@@ -231,11 +231,11 @@ if __name__ == '__main__':
         time.sleep(2.0)
 
         print("Rotating left")
-        md.drive(Action.ROTATE_CW, Speed.FAST)
+        md.drive(Action.ROTATE_LEFT, Speed.FAST)
         time.sleep(1.0)
 
         print("Rotating right")
-        md.drive(Action.ROTATE_CCW, Speed.FAST)
+        md.drive(Action.ROTATE_RIGHT, Speed.FAST)
         time.sleep(1.0)
 
         print("Stopping")
