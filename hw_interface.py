@@ -41,9 +41,9 @@ class Action(Enum):
 
 class Speed(int, Enum):
     VEER_DIFF = 5
-    SLOW = 45
-    MEDIUM = 55
-    FAST = 70
+    SLOW = 60
+    MEDIUM = 65
+    FAST = 80
     FLASH = 100
 
 
