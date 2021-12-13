@@ -1,5 +1,4 @@
 from hw_interface import *
-from ultrasonic import Ultrasonic
 import numpy as np
 import time
 
@@ -8,6 +7,11 @@ class Navigate():
     def __init__(self):
         self.ultrasonics = Ultrasonic()
         self.motors = MotorDriver()
+        self.last_action = Action.STOP
+
+    def drive(self, action, speed):
+        self.last_action = action
+        self.motors.drive(action, speed)
 
     def veer(self):
         sorted_ind = np.argsort(self.ultrasonics.distances)
@@ -16,12 +20,12 @@ class Navigate():
 
         # If there is more open space on the left, veer left
         if max_ind < min_ind:
-            self.motors.drive(Action.VEER_LEFT, Speed.MEDIUM)
+            self.drive(Action.VEER_LEFT, Speed.MEDIUM)
         # If there is more open space on the right, veer right
         else:
-            self.motors.drive(Action.VEER_RIGHT, Speed.MEDIUM)
+            self.drive(Action.VEER_RIGHT, Speed.MEDIUM)
 
-    def run(self):
+    def run(self, freq=0.1):
         try:
             while True:
                 # Update the ultrasonic sensor readings
@@ -30,29 +34,34 @@ class Navigate():
 
                 min_index = np.argmin(self.ultrasonics.distances)
                 min_val = self.ultrasonics.distances[min_index]
-                
+
                 # If the robot is very close to obstacles on all fronts, go backwards
                 if all(dist < .30 for dist in self.ultrasonics.distances):
-                    self.motors.drive(Action.DRIVE_BACKWARD, Speed.SLOW)
-                    
+                    self.drive(Action.DRIVE_BACKWARD, Speed.SLOW)
+
                 # If the robot is close to obstacle on one side rotate away from it
                 elif min_val < .30:
-                    if min_index == 0:
-                        self.motors.drive(Action.ROTATE_RIGHT, Speed.FAST)
-                    elif min_index == 1:
-                        self.motors.drive(Action.ROTATE_LEFT, Speed.FAST)
-                    elif min_index == 2:
-                        self.motors.drive(Action.ROTATE_LEFT, Speed.FAST)
-                        
+                    if min_index == self.ultrasonics.L:
+                        desired_action = Action.ROTATE_RIGHT
+                    else:
+                        desired_action = Action.ROTATE_LEFT
+
+                    if self.last_action in [
+                            Action.ROTATE_LEFT, Action.ROTATE_RIGHT
+                    ] and desired_action != self.last_action:
+                        desired_action = self.last_action
+
+                    self.drive(desired_action, Speed.FAST)
+
                 # If the robot senses an obstacle on one side, veer away from it
                 elif min_val < 1.00:
                     self.veer()
-                    
+
                 # If there are no obstacles near the robot, go forward
                 else:
-                    self.motors.drive(Action.DRIVE_FORWARD, Speed.MEDIUM)
-                    
-                time.sleep(0.1)
+                    self.drive(Action.DRIVE_FORWARD, Speed.MEDIUM)
+
+                time.sleep(freq)
 
         except KeyboardInterrupt:
             self.motors.cleanup()
@@ -60,4 +69,4 @@ class Navigate():
 
 if __name__ == "__main__":
     nav = Navigate()
-    nav.run()
+    nav.run(freq=0.1)

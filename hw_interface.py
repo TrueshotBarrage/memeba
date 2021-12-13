@@ -118,6 +118,9 @@ class Ultrasonic:
         self.left_ultra = DistanceSensor(echo=6, trigger=27, max_distance=4)
         self.mid_ultra = DistanceSensor(echo=19, trigger=17, max_distance=4)
         self.right_ultra = DistanceSensor(echo=5, trigger=4, max_distance=4)
+        self.L = 0
+        self.M = 1
+        self.R = 2
 
     def update_ultrasonic(self):
         self.distances = [
@@ -199,12 +202,12 @@ class MotorDriver():
             print(f"Veering left at ({speed} +/- {Speed.VEER_DIFF})%")
             self._set_motor(Motor.LEFT, Rot.CCW, speed - Speed.VEER_DIFF)
             self._set_motor(Motor.RIGHT, Rot.CW, speed + Speed.VEER_DIFF)
-        
+
         elif action == Action.VEER_RIGHT:
             print(f"Veering right at ({speed} +/- {Speed.VEER_DIFF})%")
             self._set_motor(Motor.LEFT, Rot.CCW, speed + Speed.VEER_DIFF)
             self._set_motor(Motor.RIGHT, Rot.CW, speed - Speed.VEER_DIFF)
-        
+
         elif action == Action.STOP:
             print(f"Stopping")
             self._set_motor(Motor.LEFT, Rot.CCW, 0)
