@@ -36,7 +36,8 @@ class Navigate():
                 min_val = self.ultrasonics.distances[min_index]
 
                 # If the robot is very close to obstacles on all fronts, go backwards
-                if all(dist < .30 for dist in self.ultrasonics.distances):
+                if any(dist < .15 for dist in self.ultrasonics.distances) or \
+                    all(dist < .30 for dist in self.ultrasonics.distances):
                     self.drive(Action.DRIVE_BACKWARD, Speed.SLOW)
 
                 # If the robot is close to obstacle on one side rotate away from it
