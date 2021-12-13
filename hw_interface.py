@@ -27,6 +27,7 @@ class Rot(int, Enum):
     CW = 1
     CCW = 0
 
+
 # Actions
 class Action(Enum):
     FORWARD = auto()
@@ -36,10 +37,12 @@ class Action(Enum):
     STOP = auto()
     VEER = auto()
 
-class Speeds(Enum):
+
+class Speed(Enum):
     SLOW = 30
     MEDIUM = 45
     FAST = 60
+
 
 class HardwarePWM():
     def __init__(self, pin, freq=20000, dc=50):
@@ -193,11 +196,13 @@ class MotorDriver():
             print(f"Stopping robot")
             self._set_motor(Motor.LEFT, Rot.CCW, 0)
             self._set_motor(Motor.RIGHT, Rot.CCW, 0)
-        
+
         elif action == Action.VEER:
-            print(f"Veering at ration left speed: {speed*(1+veer_ratio)},  right speed{speed*(1-veer_ratio)}")
-            self._set_motor(Motor.LEFT, Rot.CCW, speed*(1+veer_ratio))
-            self._set_motor(Motor.RIGHT, Rot.CW, speed*(1-veer_ratio))
+            print(
+                f"Veering at ration left speed: {speed*(1+veer_ratio)},  right speed{speed*(1-veer_ratio)}"
+            )
+            self._set_motor(Motor.LEFT, Rot.CCW, speed * (1 + veer_ratio))
+            self._set_motor(Motor.RIGHT, Rot.CW, speed * (1 - veer_ratio))
 
     def cleanup(self):
         """Clean up GPIO & PWM instances."""

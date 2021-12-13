@@ -3,11 +3,12 @@ from ultrasonic import Ultrasonic
 import numpy as np
 import random
 
+
 class Navigate():
     def __init__(self):
         self.ultrasonics = Ultrasonic()
         self.motors = MotorDriver()
-    
+
     def get_veer_ratio(self):
         min_val_1 = min(self.ultrasonics.distances)
         min_index_1 = np.argmin(self.ultrasonics.distances)
@@ -25,25 +26,26 @@ class Navigate():
                 min_index = np.argmin(self.ultrasonics.distances)
                 if min_val < 30:
                     if min_index == 0:
-                        self.motors.drive(Action.ROTATE_CW, Speeds.SLOW)
+                        self.motors.drive(Action.ROTATE_CW, Speed.SLOW)
                     if min_index == 1:
-                        random_turn = random.choice([Action.ROTATE_CW, Action.ROTATE_CCW])
-                        self.motors.drive(random_turn, Speeds.SLOW)
+                        random_turn = random.choice(
+                            [Action.ROTATE_CW, Action.ROTATE_CCW])
+                        self.motors.drive(random_turn, Speed.SLOW)
                     if min_index == 2:
-                        self.motors.drive(Action.ROTATE_CCW, Speeds.SLOW)
-                    self.motors.drive(Action.ROTATE_CCW, Speeds.SLOW)
+                        self.motors.drive(Action.ROTATE_CCW, Speed.SLOW)
+                    self.motors.drive(Action.ROTATE_CCW, Speed.SLOW)
                 elif min_val < 60:
-                    self.motors.drive(Action.VEER, Speeds.SLOW, self.get_veer_ratio())
+                    self.motors.drive(Action.VEER, Speed.SLOW,
+                                      self.get_veer_ratio())
                 elif min_val < 100:
-                    self.motors.drive(Action.VEER, Speeds.MEDIUM, self.get_veer_ratio())
+                    self.motors.drive(Action.VEER, Speed.MEDIUM,
+                                      self.get_veer_ratio())
                 else:
-                    self.motors.drive(Action.VEER, Speeds.MEDIUM)
+                    self.motors.drive(Action.VEER, Speed.MEDIUM)
         except KeyboardInterrupt:
             self.motors.cleanup()
-            
+
+
 if __name__ == "__main__":
     nav = Navigate()
     nav.run()
-
-        
-    
