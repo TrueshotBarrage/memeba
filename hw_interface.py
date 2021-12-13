@@ -27,7 +27,6 @@ class Rot(int, Enum):
     CW = 1
     CCW = 0
 
-
 # Actions
 class Action(Enum):
     FORWARD = auto()
@@ -35,7 +34,12 @@ class Action(Enum):
     ROTATE_CW = auto()
     ROTATE_CCW = auto()
     STOP = auto()
+    VEER = auto()
 
+class Speeds(Enum):
+    SLOW = 30
+    MEDIUM = 45
+    FAST = 60
 
 class HardwarePWM():
     def __init__(self, pin, freq=20000, dc=50):
@@ -102,29 +106,18 @@ class HardwarePWM():
         self.pi.stop()
 
 
-class UltrasonicModule():
-    class Ultrasonic():
-        def __init__(self, echo, trig, max_dist=4):
-            self.sensor = DistanceSensor(echo=echo,
-                                         trigger=trig,
-                                         max_distance=max_dist)
-
-        def get_dist(self):
-            return self.sensor.distance
-
+class Ultrasonic:
     def __init__(self):
-        self.sensors = []
-        self.left_ultra = UltrasonicModule.Ultrasonic(6, 27)
-        self.mid_ultra = UltrasonicModule.Ultrasonic(19, 17)
-        self.right_ultra = UltrasonicModule.Ultrasonic(5, 4)
-        self.sensors.append(self.left_ultra, self.mid_ultra, self.right_ultra)
+        self.distances = [None, None, None]
+        self.left_ultra = DistanceSensor(echo=6, trigger=27, max_distance=4)
+        self.mid_ultra = DistanceSensor(echo=19, trigger=17, max_distance=4)
+        self.right_ultra = DistanceSensor(echo=5, trigger=4, max_distance=4)
 
-    def sequential_ping(self, period=1):
-        dists = []
-        for sensor in self.sensors:
-            dists.append(sensor.get_dist())
-            time.sleep(period)
-        return dists
+    def update_ultrasonic(self):
+        self.distances = [
+            self.left_ultra.distance, self.mid_ultra.distance,
+            self.right_ultra.distance
+        ]
 
 
 class MotorDriver():
@@ -169,7 +162,7 @@ class MotorDriver():
         GPIO.output(self.motor_pins[motor_id][Pin.CCW], not rot_cw)
         self.pwm[motor_id].start(dc)
 
-    def drive(self, action, speed=45):
+    def drive(self, action, speed=45, veer_ratio=0.5):
         """Drive the robot with the specified action at the specified speed.
 
         Args:
@@ -177,24 +170,34 @@ class MotorDriver():
             speed (float): The speed of the robot's movement
         """
         if action == Action.FORWARD:
+            print(f"Driving forward at {speed}%")
             self._set_motor(Motor.LEFT, Rot.CCW, speed)
             self._set_motor(Motor.RIGHT, Rot.CW, speed)
 
         elif action == Action.BACKWARD:
+            print(f"Driving backward at {speed}%")
             self._set_motor(Motor.LEFT, Rot.CW, speed)
             self._set_motor(Motor.RIGHT, Rot.CCW, speed)
 
         elif action == Action.ROTATE_CW:
+            print(f"Rotating CW at {speed}%")
             self._set_motor(Motor.LEFT, Rot.CW, speed)
             self._set_motor(Motor.RIGHT, Rot.CW, speed)
 
         elif action == Action.ROTATE_CCW:
+            print(f"Rotating CCW at {speed}%")
             self._set_motor(Motor.LEFT, Rot.CCW, speed)
             self._set_motor(Motor.RIGHT, Rot.CCW, speed)
 
         elif action == Action.STOP:
+            print(f"Stopping robot")
             self._set_motor(Motor.LEFT, Rot.CCW, 0)
             self._set_motor(Motor.RIGHT, Rot.CCW, 0)
+        
+        elif action == Action.VEER:
+            print(f"Veering at ration left speed: {speed*(1+veer_ratio)},  right speed{speed*(1-veer_ratio)}")
+            self._set_motor(Motor.LEFT, Rot.CCW, speed*(1+veer_ratio))
+            self._set_motor(Motor.RIGHT, Rot.CW, speed*(1-veer_ratio))
 
     def cleanup(self):
         """Clean up GPIO & PWM instances."""
