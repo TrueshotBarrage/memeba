@@ -21,6 +21,10 @@ def init_display():
         kill("sxiv")
 
 
+def show_meme(self):
+    pass
+
+
 try:
     init_display()
 except KeyboardInterrupt:

@@ -54,7 +54,20 @@ def get_objects(img, thres, nms, draw=True, objects=[]):
     return img, object_info
 
 
-#Below determines the size of the live feed window that will be displayed on the Raspberry Pi OS
+def person_is_looking(img, object_info):
+    for i, object in enumerate(object_info):
+        box, class_name = object
+        if class_name == "person":
+            x0, y0, x1, y1 = box
+            width = x1 - x0
+            height = y1 - y0
+            area = width * height
+            area_proportion = area / (640 * 480)
+            print(f"(Obj{i}) Area: {area}\n",
+                  f"(Obj{i}) Frame percentage: {area_proportion * 100}%")
+
+
+# Below determines the size of the live feed window that will be displayed on the Raspberry Pi OS
 if __name__ == "__main__":
     # cap = cv2.VideoCapture(0)
     # cap.set(3, 640)
@@ -94,17 +107,18 @@ if __name__ == "__main__":
 
             # Below provides a huge amount of control.
             # 0.45 = threshold number, 0.2 = nms number
-            start = time.time()
+            # start = time.time()
             result, object_info = get_objects(img,
                                               0.45,
                                               0.2,
                                               objects=["shoe", "person"])
-            elapsed_time = time.time() - start
-            print(f"Elapsed time: {elapsed_time}")
-            print(f"result: {type(result)}, object: {object_info}")
+            person_is_looking(result, object_info)
+            # elapsed_time = time.time() - start
+            # print(f"Elapsed time: {elapsed_time}")
+            print(f"Object: {object_info}")
 
             # Show the frame
-            cv2.imshow("Output", img)
+            cv2.imshow("Output", result)
             cv2.waitKey(1)
 
             # Clear the stream in preparation for the next frame
