@@ -40,7 +40,7 @@ class Action(Enum):
 
 class Speed(Enum):
     SLOW = 30
-    MEDIUM = 45
+    MEDIUM = 50
     FAST = 60
 
 
@@ -198,11 +198,11 @@ class MotorDriver():
             self._set_motor(Motor.RIGHT, Rot.CCW, 0)
 
         elif action == Action.VEER:
-            print(
-                f"Veering at ration left speed: {speed*(1+veer_ratio)},  right speed{speed*(1-veer_ratio)}"
-            )
-            self._set_motor(Motor.LEFT, Rot.CCW, speed * (1 + veer_ratio))
-            self._set_motor(Motor.RIGHT, Rot.CW, speed * (1 - veer_ratio))
+            print(f"Veering at ratio ->\n"
+                  f"left speed: {45}\n"
+                  f"right speed: {55}")
+            self._set_motor(Motor.LEFT, Rot.CCW, 45)
+            self._set_motor(Motor.RIGHT, Rot.CW, 55)
 
     def cleanup(self):
         """Clean up GPIO & PWM instances."""
@@ -214,13 +214,17 @@ class MotorDriver():
 if __name__ == '__main__':
     md = MotorDriver()
     try:
-        print("Driving backward")
-        md.drive(Action.BACKWARD, speed=50.0)
-        time.sleep(5.0)
-
         print("Driving forward")
-        md.drive(Action.FORWARD, speed=50.0)
-        time.sleep(5.0)
+        md.drive(Action.FORWARD, speed=Speed.MEDIUM)
+        time.sleep(2.0)
+
+        print("Driving backward")
+        md.drive(Action.BACKWARD, speed=Speed.MEDIUM)
+        time.sleep(2.0)
+
+        print("Veering left")
+        md.drive(Action.VEER)
+        time.sleep(2.0)
 
         print("Stopping")
         md.drive(Action.STOP)
