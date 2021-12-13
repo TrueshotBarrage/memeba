@@ -38,9 +38,11 @@ class Action(Enum):
     VEER = auto()
 
 
-class Speed(Enum):
+class Speed(int, Enum):
     SLOW = 30
+    VEER_SLOW = 45
     MEDIUM = 50
+    VEER_FAST = 55
     FAST = 60
 
 
@@ -165,7 +167,7 @@ class MotorDriver():
         GPIO.output(self.motor_pins[motor_id][Pin.CCW], not rot_cw)
         self.pwm[motor_id].start(dc)
 
-    def drive(self, action, speed=45, veer_ratio=0.5):
+    def drive(self, action, speed1=45, speed2=45):
         """Drive the robot with the specified action at the specified speed.
 
         Args:
@@ -173,24 +175,24 @@ class MotorDriver():
             speed (float): The speed of the robot's movement
         """
         if action == Action.FORWARD:
-            print(f"Driving forward at {speed}%")
-            self._set_motor(Motor.LEFT, Rot.CCW, speed)
-            self._set_motor(Motor.RIGHT, Rot.CW, speed)
+            print(f"Driving forward at {speed1}%")
+            self._set_motor(Motor.LEFT, Rot.CCW, speed1)
+            self._set_motor(Motor.RIGHT, Rot.CW, speed1)
 
         elif action == Action.BACKWARD:
-            print(f"Driving backward at {speed}%")
-            self._set_motor(Motor.LEFT, Rot.CW, speed)
-            self._set_motor(Motor.RIGHT, Rot.CCW, speed)
+            print(f"Driving backward at {speed1}%")
+            self._set_motor(Motor.LEFT, Rot.CW, speed1)
+            self._set_motor(Motor.RIGHT, Rot.CCW, speed1)
 
         elif action == Action.ROTATE_CW:
-            print(f"Rotating CW at {speed}%")
-            self._set_motor(Motor.LEFT, Rot.CW, speed)
-            self._set_motor(Motor.RIGHT, Rot.CW, speed)
+            print(f"Rotating CW at {speed1}%")
+            self._set_motor(Motor.LEFT, Rot.CW, speed1)
+            self._set_motor(Motor.RIGHT, Rot.CW, speed1)
 
         elif action == Action.ROTATE_CCW:
-            print(f"Rotating CCW at {speed}%")
-            self._set_motor(Motor.LEFT, Rot.CCW, speed)
-            self._set_motor(Motor.RIGHT, Rot.CCW, speed)
+            print(f"Rotating CCW at {speed1}%")
+            self._set_motor(Motor.LEFT, Rot.CCW, speed1)
+            self._set_motor(Motor.RIGHT, Rot.CCW, speed1)
 
         elif action == Action.STOP:
             print(f"Stopping robot")
@@ -198,11 +200,10 @@ class MotorDriver():
             self._set_motor(Motor.RIGHT, Rot.CCW, 0)
 
         elif action == Action.VEER:
-            print(f"Veering at ratio ->\n"
-                  f"left speed: {45}\n"
-                  f"right speed: {55}")
-            self._set_motor(Motor.LEFT, Rot.CCW, 45)
-            self._set_motor(Motor.RIGHT, Rot.CW, 55)
+            print(
+                f"Veering at ration left speed: {speed1},  right speed{speed1}")
+            self._set_motor(Motor.LEFT, Rot.CCW, speed1)
+            self._set_motor(Motor.RIGHT, Rot.CW, speed2)
 
     def cleanup(self):
         """Clean up GPIO & PWM instances."""
@@ -215,11 +216,11 @@ if __name__ == '__main__':
     md = MotorDriver()
     try:
         print("Driving forward")
-        md.drive(Action.FORWARD, speed=Speed.MEDIUM)
+        md.drive(Action.FORWARD, speed1=Speed.MEDIUM)
         time.sleep(2.0)
 
         print("Driving backward")
-        md.drive(Action.BACKWARD, speed=Speed.MEDIUM)
+        md.drive(Action.BACKWARD, speed1=Speed.MEDIUM)
         time.sleep(2.0)
 
         print("Veering left")
