@@ -63,26 +63,49 @@ if __name__ == "__main__":
 
     # Initialize the PiCamera
     camera = PiCamera()
-    raw_capture = PiRGBArray(camera)
+    camera.resolution = (640, 480)
+    camera.framerate = 2
+    raw_capture = PiRGBArray(camera, size=camera.resolution)
 
     # Allow the camera to warmup
     time.sleep(0.1)
 
     # Below is the never ending loop that determines what will happen when an object is identified.
-    while True:
-        # success, img = cap.read()
+    # while True:
+    #     # success, img = cap.read()
 
-        # Grab an image from the camera
-        camera.capture(raw_capture, format="bgr")
-        img = raw_capture.array
+    #     # Below provides a huge amount of controll. the 0.45 number is the threshold number, the 0.2 number is the nms number)
+    #     result, object_info = get_objects(img,
+    #                                       0.45,
+    #                                       0.2,
+    #                                       objects=["shoe", "person"])
+    #     # print(object_info)
+    #     cv2.imshow("Output", img)
+    #     cv2.waitKey(1)
+    #     # if cv2.waitKey(1) & 0xFF == ord('q'):
+    #     #     pass
 
-        # Below provides a huge amount of controll. the 0.45 number is the threshold number, the 0.2 number is the nms number)
-        result, object_info = get_objects(img,
-                                          0.45,
-                                          0.2,
-                                          objects=["shoe", "person"])
-        # print(object_info)
-        cv2.imshow("Output", img)
-        cv2.waitKey(1)
-        # if cv2.waitKey(1) & 0xFF == ord('q'):
-        #     pass
+    for frame in camera.capture_continuous(raw_capture,
+                                           format="bgr",
+                                           use_video_port=True):
+        try:
+            # Grab an image from the camera
+            img = frame.array
+
+            # Below provides a huge amount of control.
+            # 0.45 = threshold number, 0.2 = nms number
+            result, object_info = get_objects(img,
+                                              0.45,
+                                              0.2,
+                                              objects=["shoe", "person"])
+
+            # Show the frame
+            cv2.imshow("Output", img)
+            cv2.waitKey(1)
+
+            # Clear the stream in preparation for the next frame
+            raw_capture.truncate(0)
+
+        # If the q key was pressed, break from the loop
+        except KeyboardInterrupt:
+            break
