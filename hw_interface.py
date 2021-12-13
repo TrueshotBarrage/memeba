@@ -44,6 +44,7 @@ class Speed(int, Enum):
     MEDIUM = 55
     VEER_FAST = 60
     FAST = 70
+    FLASH = 100
 
 
 class HardwarePWM():
