@@ -1,5 +1,6 @@
 #Import the Open-CV extra functionalities
 import os
+import time
 import cv2
 
 # This is to pull the information about what each object is called
@@ -59,6 +60,7 @@ if __name__ == "__main__":
 
     # Below is the never ending loop that determines what will happen when an object is identified.
     while True:
+        time.sleep(1)
         success, img = cap.read()
         # Below provides a huge amount of controll. the 0.45 number is the threshold number, the 0.2 number is the nms number)
         result, object_info = get_objects(img,
