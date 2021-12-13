@@ -30,14 +30,14 @@ class Navigate():
                 min_index = np.argmin(self.ultrasonics.distances)
                 if min_val < .30:
                     if min_index == 0:
-                        self.motors.drive(Action.ROTATE_CW, Speed.FLASH)
+                        self.motors.drive(Action.ROTATE_CW, Speed.FAST)
                     elif min_index == 1:
                         random_turn = random.choice(
                             # [Action.ROTATE_CW, Action.ROTATE_CCW])
                             [Action.ROTATE_CW])
-                        self.motors.drive(random_turn, Speed.FLASH)
+                        self.motors.drive(random_turn, Speed.FAST)
                     elif min_index == 2:
-                        self.motors.drive(Action.ROTATE_CCW, Speed.FLASH)
+                        self.motors.drive(Action.ROTATE_CCW, Speed.FAST)
                 elif min_val < .60:
                     self.motors.drive(Action.VEER, Speed.SLOW,
                                       self.get_veer_ratio())

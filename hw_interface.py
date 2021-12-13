@@ -215,16 +215,28 @@ if __name__ == '__main__':
     md = MotorDriver()
     try:
         print("Driving forward")
-        md.drive(Action.FORWARD, speed1=Speed.MEDIUM)
+        md.drive(Action.FORWARD, Speed.MEDIUM)
         time.sleep(2.0)
 
         print("Driving backward")
-        md.drive(Action.BACKWARD, speed1=Speed.MEDIUM)
+        md.drive(Action.BACKWARD, Speed.MEDIUM)
         time.sleep(2.0)
 
         print("Veering left")
-        md.drive(Action.VEER)
+        md.drive(Action.VEER, Speed.VEER_SLOW, Speed.VEER_FAST)
         time.sleep(2.0)
+
+        print("Veering right")
+        md.drive(Action.VEER, Speed.VEER_FAST, Speed.VEER_SLOW)
+        time.sleep(2.0)
+
+        print("Rotating left")
+        md.drive(Action.ROTATE_CW, Speed.FAST)
+        time.sleep(1.0)
+
+        print("Rotating right")
+        md.drive(Action.ROTATE_CCW, Speed.FAST)
+        time.sleep(1.0)
 
         print("Stopping")
         md.drive(Action.STOP)
