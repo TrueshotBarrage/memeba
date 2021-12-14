@@ -28,7 +28,6 @@ class Navigate():
     def run(self):
         # Update the ultrasonic sensor readings
         self.ultrasonics.update_ultrasonic()
-        print(self.ultrasonics.distances)
 
         min_index = np.argmin(self.ultrasonics.distances)
         min_val = self.ultrasonics.distances[min_index]

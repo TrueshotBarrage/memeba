@@ -26,13 +26,7 @@ class MemeGenerator():
 
     def show_meme(self, display_duration=5):
         os.system(self.show)
-
-        # time_before_download = time.time()
         os.system(self.download)
-        # download_duration = time.time() - time_before_download
-
-        # if download_duration < display_duration:
-        #     time.sleep(display_duration - download_duration)
         time.sleep(display_duration)
 
     def default_meme(self):
@@ -44,3 +38,8 @@ class MemeGenerator():
         self.kill("sxiv")
         self.kill("feh")
         os.system("rm meme")
+
+
+mg = MemeGenerator()
+mg.show_meme()
+mg.show_meme()
