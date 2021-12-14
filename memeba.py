@@ -5,7 +5,7 @@ import logging
 from navigation import Navigate
 from object_detection import ObjectDetection
 from meme_generator import MemeGenerator
-from hw_interface import Action
+from hw_interface import Action, Speed
 
 logger = logging.getLogger()
 logging_stream_handler = logging.StreamHandler()
@@ -41,6 +41,7 @@ class Memeba():
                 # Guarantee nav has run at least MIN_NAV_TIME before changing states
                 if self.state == State.Nav \
                     and time.time() - self.nav_time < self.MIN_NAV_TIME:
+                    logger.info("Starting Nav")
                     self.nav.run()
 
                 # If we have been showing the meme for at least 10 seconds, run nav
@@ -49,8 +50,12 @@ class Memeba():
                     self.meme_generator.kill("sxiv")
                     self.state = State.Nav
                     self.nav_time = time.time()
-                    self.nav.run()
                     logger.info("Starting Navigation, max meme time reached")
+
+                    for _ in range(int(1 // freq)):
+                        self.nav.drive(Action.ROTATE_LEFT, Speed.FLASH)
+                        time.sleep(freq)
+                        logger.info("Circling back")
 
                 else:
                     person_detected = self.object_detection.person_in_frame
@@ -68,10 +73,11 @@ class Memeba():
                         self.meme_generator.kill("sxiv")
                         self.state = State.Nav
                         self.nav_time = time.time()
-                        self.nav.run()
                         logger.info("Starting Navigation, no more person")
+                        self.nav.run()
 
                     elif self.state == State.Nav:
+                        logger.info("Continue to run")
                         self.nav.run()
 
                 time.sleep(freq)
@@ -83,6 +89,7 @@ class Memeba():
     def cleanup(self):
         self.object_detection_thread.running = False
         self.nav.motors.cleanup()
+        self.meme_generator.cleanup()
 
         # Wait until object detection thread is completely executed
         self.object_detection_thread.join()
