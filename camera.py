@@ -41,7 +41,7 @@ def get_objects(img, thres, nms, draw=True, objects=[]):
                                              confs.flatten(), bbox):
             class_name = class_names[class_id - 1]
             if class_name in objects:
-                object_info.append([box, class_name])
+                object_info.append([box, confidence, class_name])
                 if (draw):
                     cv2.rectangle(img, box, color=(0, 255, 0), thickness=2)
                     cv2.putText(img, class_names[class_id - 1].upper(),
@@ -54,17 +54,21 @@ def get_objects(img, thres, nms, draw=True, objects=[]):
     return img, object_info
 
 
-def person_is_looking(img, object_info):
-    for i, object in enumerate(object_info):
-        box, class_name = object
+def person_detected(object_info):
+    for object in object_info:
+        box, confidence, class_name = object
+
         if class_name == "person":
-            x0, y0, x1, y1 = box
-            width = x1 - x0
-            height = y1 - y0
+            x0, y0, width, height = box
             area = width * height
             area_proportion = area / (640 * 480)
-            print(f"(Obj{i}) Area: {area}\n",
-                  f"(Obj{i}) Frame percentage: {area_proportion * 100}%")
+            if area_proportion > 0.3 and confidence > 0.5:
+                return True
+
+        if class_name == "shoe":
+            pass
+
+    return False
 
 
 # Below determines the size of the live feed window that will be displayed on the Raspberry Pi OS
@@ -112,7 +116,7 @@ if __name__ == "__main__":
                                               0.45,
                                               0.2,
                                               objects=["shoe", "person"])
-            person_is_looking(result, object_info)
+            print(f"Show meme now: {person_detected(object_info)}")
             # elapsed_time = time.time() - start
             # print(f"Elapsed time: {elapsed_time}")
             print(f"Object: {object_info}")
