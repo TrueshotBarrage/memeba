@@ -70,7 +70,6 @@ def person_detected(object_info):
     return False
 
 
-
 # Below determines the size of the live feed window that will be displayed on the Raspberry Pi OS
 if __name__ == "__main__":
     # cap = cv2.VideoCapture(0)

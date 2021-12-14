@@ -9,7 +9,7 @@ class Navigate():
         self.motors = MotorDriver()
         self.last_action = Action.STOP
 
-    def drive(self, action, speed):
+    def drive(self, action, speed=Speed.MEDIUM):
         self.last_action = action
         self.motors.drive(action, speed)
 
@@ -26,43 +26,38 @@ class Navigate():
             self.drive(Action.VEER_RIGHT, Speed.MEDIUM)
 
     def run(self):
-        try:
-            # Update the ultrasonic sensor readings
-            self.ultrasonics.update_ultrasonic()
-            print(self.ultrasonics.distances)
+        # Update the ultrasonic sensor readings
+        self.ultrasonics.update_ultrasonic()
+        print(self.ultrasonics.distances)
 
-            min_index = np.argmin(self.ultrasonics.distances)
-            min_val = self.ultrasonics.distances[min_index]
+        min_index = np.argmin(self.ultrasonics.distances)
+        min_val = self.ultrasonics.distances[min_index]
 
-            # If the robot is very close to obstacles on all fronts, go backwards
-            if any(dist < .15 for dist in self.ultrasonics.distances) or \
-                all(dist < .30 for dist in self.ultrasonics.distances):
-                self.drive(Action.DRIVE_BACKWARD, Speed.SLOW)
+        # If the robot is very close to obstacles on all fronts, go backwards
+        if any(dist < .15 for dist in self.ultrasonics.distances) or \
+            all(dist < .30 for dist in self.ultrasonics.distances):
+            self.drive(Action.DRIVE_BACKWARD, Speed.SLOW)
 
-            # If the robot is close to obstacle on one side rotate away from it
-            elif min_val < .30:
-                if min_index == self.ultrasonics.L:
-                    desired_action = Action.ROTATE_RIGHT
-                else:
-                    desired_action = Action.ROTATE_LEFT
-
-                if self.last_action in [
-                        Action.ROTATE_LEFT, Action.ROTATE_RIGHT
-                ] and desired_action != self.last_action:
-                    desired_action = self.last_action
-
-                self.drive(desired_action, Speed.FAST)
-
-            # If the robot senses an obstacle on one side, veer away from it
-            elif min_val < 1.00:
-                self.veer()
-
-            # If there are no obstacles near the robot, go forward
+        # If the robot is close to obstacle on one side rotate away from it
+        elif min_val < .30:
+            if min_index == self.ultrasonics.L:
+                desired_action = Action.ROTATE_RIGHT
             else:
-                self.drive(Action.DRIVE_FORWARD, Speed.MEDIUM)
+                desired_action = Action.ROTATE_LEFT
 
-        except KeyboardInterrupt:
-            self.motors.cleanup()
+            if self.last_action in [Action.ROTATE_LEFT, Action.ROTATE_RIGHT
+                                    ] and desired_action != self.last_action:
+                desired_action = self.last_action
+
+            self.drive(desired_action, Speed.FAST)
+
+        # If the robot senses an obstacle on one side, veer away from it
+        elif min_val < 1.00:
+            self.veer()
+
+        # If there are no obstacles near the robot, go forward
+        else:
+            self.drive(Action.DRIVE_FORWARD, Speed.MEDIUM)
 
 
 if __name__ == "__main__":

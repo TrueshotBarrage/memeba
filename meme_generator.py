@@ -36,7 +36,7 @@ class MemeGenerator():
         time.sleep(display_duration)
 
     def default_meme(self):
-        default_dir = os.path.join("home", "pi", "memeba", "assets",
+        default_dir = os.path.join("/home", "pi", "memeba", "assets",
                                    "default.png")
         os.system(f"feh -F -Z {default_dir} &")
 

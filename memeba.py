@@ -1,10 +1,18 @@
-import threading
 import time
 from enum import Enum, auto
+import logging
 
 from navigation import Navigate
 from object_detection import ObjectDetection
 from meme_generator import MemeGenerator
+from hw_interface import Action
+
+logger = logging.getLogger()
+logging_stream_handler = logging.StreamHandler()
+logging_stream_handler.setFormatter(
+    logging.Formatter("[%(asctime)s] %(message)s"))
+logger.addHandler(logging_stream_handler)
+logger.setLevel(logging.INFO)
 
 
 # States
@@ -25,9 +33,9 @@ class Memeba():
         self.MAX_MEME_TIME = 10
 
         self.object_detection = ObjectDetection()
-        self.object_detection_thread = threading.Thread(
-            target=self.object_object_detection.stream, args=())
-        self.object_detection_thread.start()
+        # self.object_detection_thread = threading.Thread(
+        #     target=self.object_detection.stream)
+        self.object_detection_thread = self.object_detection.stream()
 
     def run(self, freq):
         while True:
@@ -43,28 +51,33 @@ class Memeba():
                     self.nav_time = time.time()
                     self.state = State.Nav
                     self.nav.run()
+                    logger.info("Starting Navigation, max meme time reached")
 
                 else:
                     person_detected = self.object_detection.person_in_frame
 
                     # If person detected and nav running, switch to meme mode
                     if person_detected and self.state == State.Nav:
+                        self.nav.drive(Action.STOP)
                         self.meme_generator.show_meme(self.MIN_MEME_TIME)
                         self.state = State.Meme
                         self.meme_time = time.time()
+                        logger.info("Starting Meme, person detected!")
 
                     # If no person detected and meme running, switch to nav mode
                     elif not person_detected and self.state == State.Meme:
                         self.state = State.Nav
                         self.nav_time = time.time()
                         self.nav.run()
+                        logger.info("Starting Navigation, no more person")
 
                     elif self.state == State.Nav:
                         self.nav.run()
 
                 time.sleep(freq)
 
-            finally:
+            except KeyboardInterrupt:
+                logger.info("Cleaning up everything!")
                 self.cleanup()
 
     def cleanup(self):
