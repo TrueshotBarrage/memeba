@@ -205,8 +205,8 @@ class MotorDriver():
 
         elif action == Action.VEER_RIGHT:
             print(f"Veering right at ({speed} +/- {Speed.VEER_DIFF})%")
-            self._set_motor(Motor.LEFT, Rot.CCW, speed + Speed.VEER_DIFF)
-            self._set_motor(Motor.RIGHT, Rot.CW, speed - Speed.VEER_DIFF)
+            self._set_motor(Motor.LEFT, Rot.CCW, speed + Speed.VEER_DIFF + 2)
+            self._set_motor(Motor.RIGHT, Rot.CW, speed - Speed.VEER_DIFF - 2)
 
         elif action == Action.STOP:
             print(f"Stopping")
@@ -225,19 +225,19 @@ if __name__ == '__main__':
     try:
         # Driving forward
         md.drive(Action.DRIVE_FORWARD, Speed.MEDIUM)
-        time.sleep(2.0)
+        time.sleep(5.0)
 
         # Driving backward
         md.drive(Action.DRIVE_BACKWARD, Speed.MEDIUM)
-        time.sleep(2.0)
+        time.sleep(5.0)
 
         # Veering left
-        md.drive(Action.VEER, Speed.VEER_SLOW, Speed.VEER_FAST)
-        time.sleep(2.0)
+        md.drive(Action.VEER_LEFT, Speed.MEDIUM)
+        time.sleep(5.0)
 
         # Veering right
-        md.drive(Action.VEER, Speed.VEER_FAST, Speed.VEER_SLOW)
-        time.sleep(2.0)
+        md.drive(Action.VEER_RIGHT, Speed.MEDIUM)
+        time.sleep(5.0)
 
         # Rotating left
         md.drive(Action.ROTATE_LEFT, Speed.FAST)

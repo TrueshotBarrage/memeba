@@ -113,6 +113,7 @@ class ObjectDetection():
 
                 # If a person is detected and large enough in the frame:
                 if self.person_detected(object_info):
+                    print("Person detected")
                     self.person_in_frame = True
                 else:
                     self.person_in_frame = False
@@ -131,9 +132,9 @@ class ObjectDetection():
 
 # Below determines the size of the live feed window that will be displayed on the Raspberry Pi OS
 if __name__ == "__main__":
-    # od = ObjectDetection()
-    # od_thread = od.stream()
-    # time.sleep(10)
-    # od.running = False
-    # od_thread.join()
+    od = ObjectDetection()
+    od_thread = od.stream()
+    time.sleep(10)
+    od.running = False
+    od_thread.join()
     pass
