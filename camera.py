@@ -1,7 +1,6 @@
 #Import the Open-CV extra functionalities
 import os
 import time
-
 import cv2
 from picamera.array import PiRGBArray
 from picamera import PiCamera
@@ -69,6 +68,7 @@ def person_detected(object_info):
             pass
 
     return False
+
 
 
 # Below determines the size of the live feed window that will be displayed on the Raspberry Pi OS
