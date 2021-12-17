@@ -20,6 +20,7 @@
       media="print"
       type="text/css"
     />
+    <title>ECE 5725 Final Project: Memeba</title>
   </head>
 
   <body>
@@ -40,7 +41,7 @@
         <section id="main-content">
           <h1>Memeba</h1>
           <h2>One Memeba to rule them all</h2>
-          <img src="assets/one_memeba.png" />
+          <img alt="" src="assets/one_memeba.png" />
 
           <h2>12/16/21 - David Kim (jk2537), Zoltan Csaki (zcc6)</h2>
 
@@ -59,11 +60,13 @@
           <h2>Project Video</h2>
 
           <iframe
-            width="420"
+            width="560"
             height="315"
-            src="https://www.youtube.com/watch?v=GuM8vTq0jd4,"
-          >
-          </iframe>
+            src="https://www.youtube.com/embed/m09J2iWUFHg"
+            title="YouTube video player"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+          ></iframe>
 
           <h2>Introduction</h2>
 
@@ -87,7 +90,7 @@
             a preliminary design of wanted the Memeba to look and the
             functionality we wanted it to have.
           </p>
-          <img src="assets/memeba_design.png" width="60%" />
+          <img alt="" src="assets/memeba_design.png" width="500" />
 
           <p>
             This is when we decided that we wanted to have a tank tread drive
@@ -134,7 +137,7 @@
             the Memeba's use case to hallways and open areas that did not have
             small cluttered objects.
           </p>
-          <img src="assets/3d_mounts.png" width="40%" />
+          <img alt="" src="assets/3d_mounts.png" width="500" />
 
           <p>
             After deciding to use ultrasonic sensors we designed and 3D printed
@@ -145,7 +148,7 @@
             readings.
           </p>
 
-          <img src="assets/ultrasonic_mounts.jpg" width="40%" />
+          <img alt="" src="assets/ultrasonic_mounts.jpg" width="400" />
 
           <h3>Circuit Design</h3>
 
@@ -157,7 +160,7 @@
             circuit as below and began soldering.
           </p>
 
-          <img src="assets/circuit_diagram.png" width="50%" />
+          <img alt="" src="assets/circuit_diagram.png" width="500" />
 
           <p>
             The circuit design consists of the motor driver we used for Lab 3,
@@ -174,7 +177,7 @@
             behavior.
           </p>
 
-          <img src="assets/circuitry.jpg" width="40%" />
+          <img alt="" src="assets/circuitry.jpg" width="400" />
 
           <p>
             On top of this, we attempted to cleanly run the wires under the
@@ -406,7 +409,7 @@
             Finally we learned that it is important to not always take life so
             seriously and sometimes all you need to do is laugh at a meme.
           </p>
-          <img src="assets/elmo.gif" width="60%" />
+          <img alt="" src="assets/elmo.gif" width="600" />
 
           <h2>Future work</h2>
 
@@ -433,69 +436,71 @@
           </p>
 
           <h2>Budget</h2>
-          <img src="assets/bill_of_materials.png" width="80%" />
+          <img alt="" src="assets/bill_of_materials.png" width="800" />
 
           <h2>References</h2>
 
-          <li>
-            Robot Tank Chassis:
-            <a
-              href="https://www.amazon.com/Chassis-Aluminum-Arduino-Raspberry-Control/dp/B08QZB5MFR"
-              >https://www.amazon.com/Chassis-Aluminum-Arduino-Raspberry-Control/dp/B08QZB5MFR</a
-            >
-          </li>
-          <li>
-            Raspberry Pi 4 Pin out Diagram:
-            <a
-              href="https://en.wikipedia.org/wiki/Raspberry_Pi#General_purpose_input-output_(GPIO)_connector"
-              >https://en.wikipedia.org/wiki/Raspberry*Pi#General_purpose_input-output*(GPIO)\_connector</a
-            >
-          </li>
-          <li>
-            PiGPIO Hardware PWM Library:
-            <a href="http://abyz.me.uk/rpi/pigpio/python.html"
-              >http://abyz.me.uk/rpi/pigpio/python.html</a
-            >
-          </li>
-          <li>
-            Ultrasonic Sensor Tutorial:
-            <a
-              href="https://tutorials-raspberrypi.com/raspberry-pi-ultrasonic-sensor-hc-sr04/"
-              >https://tutorials-raspberrypi.com/raspberry-pi-ultrasonic-sensor-hc-sr04/</a
-            >
-          </li>
-          <li>
-            Ultrasonic Sensor Code Library:
-            <a href="https://gpiozero.readthedocs.io/en/stable/api_input.html"
-              >https://gpiozero.readthedocs.io/en/stable/api_input.html</a
-            >
-          </li>
-          <li>
-            Ultrasonic Sensor Mount:
-            <a href="https://www.thingiverse.com/thing:4749179"
-              >https://www.thingiverse.com/thing:4749179</a
-            >
-          </li>
-          <li>
-            OpenCV DNN Tutorial:
-            <a
-              href="https://core-electronics.com.au/tutorials/object-identify-raspberry-pi.html"
-              >https://core-electronics.com.au/tutorials/object-identify-raspberry-pi.html</a
-            >
-          </li>
-          <li>
-            VNC Viewer:
-            <a
-              href="https://www.realvnc.com/en/connect/download/viewer/raspberrypi/"
-              >https://www.realvnc.com/en/connect/download/viewer/raspberrypi/</a
-            >
-          </li>
-          <li>
-            Meme API:
-            <a href="https://github.com/D3vd/Meme_Api"
-              >https://github.com/D3vd/Meme_Api</a
-            >
-          </li>
+          <ul>
+            <li>
+              Robot Tank Chassis:
+              <a
+                href="https://www.amazon.com/Chassis-Aluminum-Arduino-Raspberry-Control/dp/B08QZB5MFR"
+                >https://www.amazon.com/Chassis-Aluminum-Arduino-Raspberry-Control/dp/B08QZB5MFR</a
+              >
+            </li>
+            <li>
+              Raspberry Pi 4 Pin out Diagram:
+              <a
+                href="https://en.wikipedia.org/wiki/Raspberry_Pi#General_purpose_input-output_(GPIO)_connector"
+                >https://en.wikipedia.org/wiki/Raspberry*Pi#General_purpose_input-output*(GPIO)\_connector</a
+              >
+            </li>
+            <li>
+              PiGPIO Hardware PWM Library:
+              <a href="http://abyz.me.uk/rpi/pigpio/python.html"
+                >http://abyz.me.uk/rpi/pigpio/python.html</a
+              >
+            </li>
+            <li>
+              Ultrasonic Sensor Tutorial:
+              <a
+                href="https://tutorials-raspberrypi.com/raspberry-pi-ultrasonic-sensor-hc-sr04/"
+                >https://tutorials-raspberrypi.com/raspberry-pi-ultrasonic-sensor-hc-sr04/</a
+              >
+            </li>
+            <li>
+              Ultrasonic Sensor Code Library:
+              <a href="https://gpiozero.readthedocs.io/en/stable/api_input.html"
+                >https://gpiozero.readthedocs.io/en/stable/api_input.html</a
+              >
+            </li>
+            <li>
+              Ultrasonic Sensor Mount:
+              <a href="https://www.thingiverse.com/thing:4749179"
+                >https://www.thingiverse.com/thing:4749179</a
+              >
+            </li>
+            <li>
+              OpenCV DNN Tutorial:
+              <a
+                href="https://core-electronics.com.au/tutorials/object-identify-raspberry-pi.html"
+                >https://core-electronics.com.au/tutorials/object-identify-raspberry-pi.html</a
+              >
+            </li>
+            <li>
+              VNC Viewer:
+              <a
+                href="https://www.realvnc.com/en/connect/download/viewer/raspberrypi/"
+                >https://www.realvnc.com/en/connect/download/viewer/raspberrypi/</a
+              >
+            </li>
+            <li>
+              Meme API:
+              <a href="https://github.com/D3vd/Meme_Api"
+                >https://github.com/D3vd/Meme_Api</a
+              >
+            </li>
+          </ul>
 
           <h2>Code Appendix</h2>
           <p>
